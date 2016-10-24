@@ -1,34 +1,105 @@
 import React from 'react';
+
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import { Card, Button, CardImg, CardTitle, CardText, CardGroup, CardSubtitle, CardBlock } from 'reactstrap';
 
 export default class Home extends React.Component {
 
 	render () {
-		const tes = 666;
-
 		return (
-			//<p>Home, {this.props.name}! {tes}</p>
 			<div>
-				<Blog posts={posts} />
+				<Contents posts={posts} />
 			</div>
 		);
 	}
 }
 
-function Blog(props) {
+class UserList extends React.Component {
+
+	render() {
+		return (
+		<CardGroup>
+		  <Card>
+		    <CardBlock>
+		      <CardTitle>Card title</CardTitle>
+		      <CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</CardText>
+		    </CardBlock>
+		  </Card>
+		  <Card>
+		    <CardBlock>
+		      <CardTitle>Card title</CardTitle>
+		      <CardText>This card has supporting text below as a natural lead-in to additional content.</CardText>
+		    </CardBlock>
+		  </Card>
+		  <Card>
+		    <CardBlock>
+		      <CardTitle>Card title</CardTitle>
+		      <CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</CardText>
+		    </CardBlock>
+		  </Card>
+		</CardGroup>
+		);
+	}
+}
+
+class Paginations extends React.Component {
+  render() {
+    return (
+      <Pagination>
+        <PaginationItem>
+          <PaginationLink previous href="#" />
+        </PaginationItem>
+        <PaginationItem active>
+          <PaginationLink href="#">
+            1
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">
+            2
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem active>
+          <PaginationLink href="#">
+            3
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">
+            4
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">
+            5
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink next href="#" />
+        </PaginationItem>
+      </Pagination>
+    );
+  }
+}
+
+function Contents(props) {
   
-  const content = props.posts.map((post) =>
-    <div key={post.id}>
+  const content = props.posts.slice(96, 102).map((post) =>
+  	<div key={post.id}>
       <hr />
       <p>{post.id}</p>
       <h3>{post.title}</h3>
       <p>{post.body}</p>
     </div>
-  );
+  );  
+
   return (
     <div>
-      {content}
-      <hr />
+      <div>
+	      <UserList />
+	      <UserList />
+	  </div>
+      <Paginations />
     </div>
   );
 }
