@@ -10,7 +10,6 @@ import { Navbar, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
 class Contents extends React.Component {
   constructor(props) {
     super(props);
-    //this.handleClick = this.handleClick.bind(this);
     this.state = {page: 1};
   }
 
@@ -35,7 +34,6 @@ class Contents extends React.Component {
     const page = this.state.page;    
     let content = null;    
     if (page == 1 ) {
-      //content = <div><h1>Home</h1></div>
       content = <Home name="home"/>;
     } else if (page == 2 ) {
       content = <div><h1>About</h1></div>
@@ -53,23 +51,25 @@ class Contents extends React.Component {
 
     return (
       <div>
-        <Navbar color="faded" light>
-          <Nav className="pull-xs-right" navbar>
-            <NavItem>
-              <NavLink href="#" onClick={boundHomeClick}>Home</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="#" onClick={boundAboutClick}>About</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="#" onClick={boundTermClick}>Term</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="#" onClick={boundPrivacyClick}>Privacy</NavLink>
-            </NavItem>
-          </Nav>
-        </Navbar>
-        <div>
+        <div id="navibar">
+          <Navbar className="container">
+            <Nav className="pull-xs-right" navbar>
+                <NavItem>
+                  <NavLink href="#" onClick={boundHomeClick}>Home</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink href="#" onClick={boundAboutClick}>About</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink href="#" onClick={boundTermClick}>Term</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink href="#" onClick={boundPrivacyClick}>Privacy</NavLink>
+                </NavItem>
+            </Nav>
+          </Navbar>
+        </div>
+        <div className="container">
           {content}
         </div>
       </div>

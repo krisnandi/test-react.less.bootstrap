@@ -1,3 +1,73 @@
+@nice-blue: #5B83AD;
+@light-blue: @nice-blue + #111;
+@twitter-blue: #4ec1e7;
+@light-grey: #d3d3d3;
+
+@screen-s: 768px; 
+@screen-m: 970px;
+
+.hometitle {	
+	padding-top: 2rem;
+	padding-bottom: 2rem;
+	font-weight: lighter;
+ 	color: @light-grey;
+
+}
+
+.paginationbar {
+    text-align: right !important;   
+    @media (max-width: @screen-s) {    
+		text-align: center!important;
+    }
+}
+
+#navibar {
+	background-color: @twitter-blue;
+}
+
+.navbar {
+  	background-color: transparent;
+}
+
+.nav-link {
+	color: white;
+}
+
 body {
     background-color: white;
+}
+
+.row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}
+.row > [class*='col-'] {
+	 display: flex;
+	 flex-direction: column;
+}
+
+.card {
+    height:100%;
+    margin-bottom: 1.5rem;
+}
+
+.card-block {
+    padding: 0;
+}
+
+.card-text {
+	padding: 1.5rem;
+}
+
+.card-block .posttitle {	
+	min-height: 150px;
+	color: white;
+    background-color: @twitter-blue;	
+  	display: flex;
+  	align-items: center;
+}
+
+.card-block .posttitle .isi {	
 }

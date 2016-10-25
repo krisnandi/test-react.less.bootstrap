@@ -1,7 +1,7 @@
 import React from 'react';
-
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import { Card, Button, CardImg, CardTitle, CardText, CardGroup, CardSubtitle, CardBlock } from 'reactstrap';
+import Gridify from 'react-bootstrap-gridify';
 
 export default class Home extends React.Component {
 	render () {
@@ -16,8 +16,9 @@ export default class Home extends React.Component {
 class Paginations extends React.Component {
   constructor(props) {
     super(props);
-    const maxPage = Math.ceil(posts.length / 6);
-    this.state = {current: 0, maxPage: maxPage};
+    const totalPost = posts.length;
+    const maxPage = Math.ceil(totalPost / 6);
+    this.state = {current: 0, maxPage: maxPage, totalPost: totalPost};
   }
 
   onPrevious(){
@@ -42,6 +43,7 @@ class Paginations extends React.Component {
   render() {
     const current = this.state.current;
     const maxPage = this.state.maxPage;
+    const totalPost = this.state.totalPost;
     let minPagination = current-2;
     let maxPagination = current+3;    
 
@@ -58,18 +60,21 @@ class Paginations extends React.Component {
     const minPost = current*6;
     const halfPost= minPost+3;
     const maxPost = halfPost+3;;
-    
-    console.log('current page: ' + current);
-    console.log('min page: ' + minPagination);
-    console.log('max page: ' + maxPagination);
 
-
-    let userList = (
-      <div>
-        <UserList posts={posts} min={minPost} max={halfPost} />
-        <UserList posts={posts} min={halfPost} max={maxPost} />
-      </div>
-    );
+    var userList = [];
+    for(var i=minPost; i<maxPost; i++){
+      var post = this.props.posts[i];
+      if(i<totalPost){
+        userList.push(
+          <Card key={post.id}>
+            <CardBlock>
+              <CardText className="posttitle"><p className="isi">{post.title}</p></CardText>
+              <CardText className="postbody">{post.body}</CardText>
+            </CardBlock>
+          </Card>
+        );
+      }
+    } 
 
     var tempPagination = [];
     for(var i=minPagination; i<maxPagination; i++){
@@ -100,10 +105,13 @@ class Paginations extends React.Component {
     return (
       <div>
         <div>
-          {userList}
+          <h1 className="hometitle">USER LIST</h1>
         </div>
         <div>
-          <Pagination className="pull-xs-right">
+          <Gridify columns={{xs:1, sm:2, md:3, lg:3}} components={userList}/>
+        </div>
+        <div className="paginationbar">
+          <Pagination>
             <PaginationItem>
               <PaginationLink previous href="#" onClick={boundPreviousClick}/>
             </PaginationItem>
@@ -116,27 +124,6 @@ class Paginations extends React.Component {
       </div>
     );
   }
-}
-
-function UserList(props) {
-  const min = props.min;
-  const max = props.max;
-
-  const content = props.posts.slice(min, max).map((post) =>
-    <Card key={post.id}>
-      <CardBlock>
-        <CardTitle>{post.title}</CardTitle>
-        <CardText>{post.body}</CardText>
-      </CardBlock>
-    </Card>
-  );  
-
-  return (
-    <CardGroup> 
-      {content}     
-    </CardGroup>
-  );
-
 }
 
 const posts = [
