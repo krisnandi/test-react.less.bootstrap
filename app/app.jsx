@@ -77,25 +77,5 @@ class Contents extends React.Component {
   }
 }
 
-class App extends React.Component {
-  render () {
-    return (
-      <div>
-        <div>
-          <Contents />
-        </div>
-        <div>
-          <Hello name="world"/>
-          <Hello name="React"/>
-          <Hello name="Less"/>
-        </div>
-      </div>
-    );
-  }
-}
-
-
-
-
 //ReactDOM.render(React.createElement(App), document.getElementById('app'), null);
 ReactDOM.render(<Contents />, document.getElementById('app'), null);

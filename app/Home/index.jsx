@@ -4,104 +4,139 @@ import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import { Card, Button, CardImg, CardTitle, CardText, CardGroup, CardSubtitle, CardBlock } from 'reactstrap';
 
 export default class Home extends React.Component {
-
 	render () {
 		return (
 			<div>
-				<Contents posts={posts} />
+				<Paginations posts={posts} />
 			</div>
 		);
 	}
 }
 
-class UserList extends React.Component {
-
-	render() {
-		return (
-		<CardGroup>
-		  <Card>
-		    <CardBlock>
-		      <CardTitle>Card title</CardTitle>
-		      <CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</CardText>
-		    </CardBlock>
-		  </Card>
-		  <Card>
-		    <CardBlock>
-		      <CardTitle>Card title</CardTitle>
-		      <CardText>This card has supporting text below as a natural lead-in to additional content.</CardText>
-		    </CardBlock>
-		  </Card>
-		  <Card>
-		    <CardBlock>
-		      <CardTitle>Card title</CardTitle>
-		      <CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</CardText>
-		    </CardBlock>
-		  </Card>
-		</CardGroup>
-		);
-	}
-}
-
 class Paginations extends React.Component {
+  constructor(props) {
+    super(props);
+    const maxPage = Math.ceil(posts.length / 6);
+    this.state = {current: 0, maxPage: maxPage};
+  }
+
+  onPrevious(){
+    let temp = this.state.current;
+    if(temp>0){
+      temp--;
+      this.setState({current: temp});
+    }
+  }
+  onNext(){
+    let temp = this.state.current;
+    let maxPage = this.state.maxPage;
+    if(temp<maxPage){
+      temp++;
+      this.setState({current: temp});
+    }
+  }
+  onNumber(number){
+    this.setState({current: number});
+  }
+
   render() {
+    const current = this.state.current;
+    const maxPage = this.state.maxPage;
+    let minPagination = current-2;
+    let maxPagination = current+3;    
+
+    if(minPagination<0){
+      minPagination =0;
+      maxPagination = minPagination+5;
+    }
+
+    if(maxPagination > maxPage -1){
+      maxPagination = maxPage;
+      minPagination = maxPagination-5;
+    }
+
+    const minPost = current*6;
+    const halfPost= minPost+3;
+    const maxPost = halfPost+3;;
+    
+    console.log('current page: ' + current);
+    console.log('min page: ' + minPagination);
+    console.log('max page: ' + maxPagination);
+
+
+    let userList = (
+      <div>
+        <UserList posts={posts} min={minPost} max={halfPost} />
+        <UserList posts={posts} min={halfPost} max={maxPost} />
+      </div>
+    );
+
+    var tempPagination = [];
+    for(var i=minPagination; i<maxPagination; i++){
+      let boundNumber1Click = this.onNumber.bind(this, i);
+      if(current == i){
+        tempPagination.push(
+          <PaginationItem key={i} active>
+            <PaginationLink href="#" onClick={boundNumber1Click}>
+              {i+1}
+            </PaginationLink>
+          </PaginationItem>
+        );
+      }
+      else{
+        tempPagination.push(
+          <PaginationItem key={i}>
+            <PaginationLink href="#" onClick={boundNumber1Click}>
+              {i+1}
+            </PaginationLink>
+          </PaginationItem>
+        );
+      }
+    }
+
+    let boundPreviousClick = this.onPrevious.bind(this);
+    let boundNextClick = this.onNext.bind(this);
+
     return (
-      <Pagination>
-        <PaginationItem>
-          <PaginationLink previous href="#" />
-        </PaginationItem>
-        <PaginationItem active>
-          <PaginationLink href="#">
-            1
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">
-            2
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem active>
-          <PaginationLink href="#">
-            3
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">
-            4
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">
-            5
-          </PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink next href="#" />
-        </PaginationItem>
-      </Pagination>
+      <div>
+        <div>
+          {userList}
+        </div>
+        <div>
+          <Pagination className="pull-xs-right">
+            <PaginationItem>
+              <PaginationLink previous href="#" onClick={boundPreviousClick}/>
+            </PaginationItem>
+            {tempPagination}
+            <PaginationItem>
+              <PaginationLink next href="#" onClick={boundNextClick}/>
+            </PaginationItem>            
+          </Pagination>
+        </div>
+      </div>
     );
   }
 }
 
-function Contents(props) {
-  
-  const content = props.posts.slice(96, 102).map((post) =>
-  	<div key={post.id}>
-      <hr />
-      <p>{post.id}</p>
-      <h3>{post.title}</h3>
-      <p>{post.body}</p>
-    </div>
+function UserList(props) {
+  const min = props.min;
+  const max = props.max;
+
+  const content = props.posts.slice(min, max).map((post) =>
+    <Card key={post.id}>
+      <CardBlock>
+        <CardTitle>{post.title}</CardTitle>
+        <CardText>{post.body}</CardText>
+      </CardBlock>
+    </Card>
   );  
 
   return (
-    <div>
-      <div>
-	      <UserList />
-	      <UserList />
-	  </div>
-      <Paginations />
-    </div>
+    <CardGroup> 
+      {content}     
+    </CardGroup>
   );
+
 }
 
 const posts = [
